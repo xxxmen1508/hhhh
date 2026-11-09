@@ -1,1 +1,481 @@
 
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Family Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --bg:#0b0710; --bg2:#120a1b; --card:#1a1026; --card2:#150d1f;
+  --line:rgba(255,255,255,.09); --txt:#ece7f2; --dim:#a596b8;
+  --pink:#f0a6d0; --violet:#b98cf5; --cyan:#8ce8f0; --green:#8ef0b4; --amber:#f5d78c;
+  --serif:"Frank Ruhl Libre",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(185,140,245,.16), transparent 60%),
+    radial-gradient(900px 500px at 5% 110%, rgba(240,166,208,.12), transparent 60%),
+    var(--bg);
+  color:var(--txt); font-family:Heebo,system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--pink);text-decoration:none}
+/* ---------- header ---------- */
+header{
+  position:sticky; top:0; z-index:60; display:flex; align-items:center; gap:14px;
+  padding:14px 22px; border-bottom:1px solid var(--line);
+  background:rgba(11,7,16,.86); backdrop-filter:blur(16px);
+}
+.logo{display:flex;align-items:center;gap:11px}
+.logo .mark{
+  width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
+  background:rgba(240,166,208,.14); color:var(--pink); font-size:19px;
+  border:1px solid rgba(240,166,208,.25);
+}
+.logo h1{font-family:var(--serif); font-size:18px; letter-spacing:.06em;
+  background:linear-gradient(90deg,#f7c9e3,#c9b0fb); -webkit-background-clip:text; background-clip:text; color:transparent}
+.searchwrap{margin-inline-start:auto; position:relative}
+.searchwrap input{
+  width:min(46vw,330px); height:40px; border-radius:12px; padding:0 38px 0 14px;
+  background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--txt);
+  font-family:inherit; font-size:14px; outline:none;
+}
+.searchwrap input:focus{border-color:rgba(240,166,208,.5); background:rgba(255,255,255,.08)}
+.searchwrap .ic{position:absolute; inset-inline-end:12px; top:11px; color:var(--dim); pointer-events:none}
+/* ---------- layout ---------- */
+.shell{display:grid; grid-template-columns:250px 1fr; gap:24px; max-width:1440px; margin:0 auto; padding:24px 22px 90px}
+aside{position:sticky; top:82px; align-self:start; display:flex; flex-direction:column; gap:16px}
+.navbox, .exportbox{
+  background:linear-gradient(180deg,var(--card),var(--card2)); border:1px solid var(--line);
+  border-radius:18px; padding:14px;
+}
+.navbox p, .exportbox p{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.navbox a{display:block;padding:8px 10px;border-radius:10px;color:var(--txt);font-size:14px;opacity:.85}
+.navbox a:hover{background:rgba(240,166,208,.1);opacity:1}
+.exportbox button{
+  width:100%; margin-bottom:8px; padding:10px; border-radius:11px; cursor:pointer;
+  background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--txt);
+  font-family:inherit; font-size:13px; text-align:start;
+}
+.exportbox button:hover{background:rgba(240,166,208,.13);border-color:rgba(240,166,208,.35)}
+.exportbox button:last-child{margin-bottom:0}
+.note{font-size:12px;color:var(--dim);line-height:1.65;padding:0 4px}
+/* ---------- main ---------- */
+h2.sec{font-family:var(--serif); font-size:15px; letter-spacing:.05em; color:#d9c8ea;
+  margin:26px 0 12px; display:flex; align-items:center; gap:10px}
+h2.sec:first-of-type{margin-top:0}
+h2.sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:12px}
+.card{
+  position:relative; display:flex; gap:12px; align-items:center; padding:13px;
+  border-radius:17px; border:1px solid var(--line); cursor:pointer;
+  background:linear-gradient(160deg,var(--card),var(--card2));
+  transition:transform .18s, border-color .18s, box-shadow .18s;
+}
+.card:hover{transform:translateY(-3px); border-color:rgba(240,166,208,.4); box-shadow:0 14px 34px rgba(0,0,0,.45), 0 0 0 1px rgba(240,166,208,.18)}
+.card.main{border-color:rgba(240,166,208,.55); box-shadow:0 0 26px rgba(240,166,208,.18) inset}
+.av{
+  width:52px;height:52px;border-radius:14px;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(255,255,255,.06); border:1px solid var(--line); font-size:21px; color:var(--dim);
+  overflow:hidden;
+}
+.av img{width:100%;height:100%;object-fit:cover}
+.meta{min-width:0}
+.role{font-size:10.5px;font-weight:600;letter-spacing:.1em;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:6px}
+.r-main{background:rgba(240,166,208,.18);color:var(--pink)}
+.r-spouse{background:rgba(140,232,240,.15);color:var(--cyan)}
+.r-parent{background:rgba(142,240,180,.14);color:var(--green)}
+.r-other{background:rgba(245,215,140,.14);color:var(--amber)}
+.nm{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{font-size:11.5px;color:var(--dim);margin-top:4px;font-variant-numeric:tabular-nums}
+/* ---------- overlay / loader ---------- */
+#load{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(11,7,16,.94);text-align:center;padding:24px}
+#load .ring{width:52px;height:52px;border-radius:50%;border:3px solid rgba(255,255,255,.12);border-top-color:var(--pink);animation:spin .9s linear infinite;margin:0 auto 18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+#load p{font-size:14px;color:var(--dim);max-width:420px;line-height:1.7}
+#load b{color:var(--txt);display:block;margin-bottom:8px;font-size:15px}
+/* ---------- detail modal ---------- */
+#modal{position:fixed;inset:0;z-index:150;display:none;place-items:center;background:rgba(5,3,8,.78);backdrop-filter:blur(6px);padding:20px}
+#modal.on{display:grid}
+.sheet{
+  width:min(560px,100%); max-height:86vh; overflow:auto; border-radius:22px; padding:24px;
+  background:linear-gradient(180deg,#1d1229,#130c1c); border:1px solid rgba(240,166,208,.25);
+  box-shadow:0 30px 90px rgba(0,0,0,.7);
+}
+.sheet h3{font-family:var(--serif);font-size:22px;margin-bottom:4px}
+.sheet .x{float:left;cursor:pointer;color:var(--dim);font-size:20px;line-height:1}
+.rows{margin-top:16px;display:flex;flex-direction:column;gap:1px;border-radius:14px;overflow:hidden}
+.row{display:flex;gap:14px;padding:11px 14px;background:rgba(255,255,255,.035);font-size:13.5px}
+.row span:first-child{width:120px;flex:0 0 auto;color:var(--dim);font-size:12.5px}
+.row span:last-child{word-break:break-word}
+/* ---------- assistant ---------- */
+#fab{position:fixed;inset-inline-start:22px;bottom:22px;z-index:120;padding:13px 20px;border-radius:30px;cursor:pointer;
+  background:linear-gradient(90deg,#f0a6d0,#b98cf5); color:#2a1030; font-weight:700; font-family:inherit; font-size:14px;
+  border:0; box-shadow:0 14px 40px rgba(185,140,245,.4)}
+#panel{position:fixed;inset-inline-start:22px;bottom:22px;z-index:130;width:min(400px,calc(100vw - 44px));
+  display:none; flex-direction:column; max-height:76vh; border-radius:20px; overflow:hidden;
+  background:#140d1e; border:1px solid rgba(185,140,245,.3); box-shadow:0 30px 80px rgba(0,0,0,.7)}
+#panel.on{display:flex}
+#panel .top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+#panel .top b{font-family:var(--serif);font-size:15px}
+#panel .top i{cursor:pointer;font-style:normal;color:var(--dim);font-size:19px}
+#log{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:13.5px;line-height:1.65}
+.msg{padding:10px 13px;border-radius:14px;max-width:92%}
+.msg.u{align-self:flex-start;background:rgba(240,166,208,.16)}
+.msg.a{align-self:flex-end;background:rgba(255,255,255,.055)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 10px}
+.chips button{font-size:11.5px;padding:6px 11px;border-radius:20px;cursor:pointer;font-family:inherit;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--dim)}
+.chips button:hover{color:var(--txt);border-color:rgba(240,166,208,.4)}
+#panel form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+#panel input{flex:1;height:40px;border-radius:11px;padding:0 12px;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);color:var(--txt);font-family:inherit;outline:none;font-size:13.5px}
+#panel button.go{height:40px;padding:0 18px;border-radius:11px;border:0;cursor:pointer;font-family:inherit;
+  font-weight:700;background:linear-gradient(90deg,#f0a6d0,#b98cf5);color:#2a1030}
+footer{border-top:1px solid var(--line);padding:18px;text-align:center;font-family:var(--serif);
+  font-size:11px;letter-spacing:.16em;color:rgba(255,255,255,.32)}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr}
+  aside{position:static;order:2}
+  .searchwrap input{width:44vw}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="mark">✦</div>
+    <h1>FAMILY INTELLIGENCE</h1>
+  </div>
+  <div class="searchwrap">
+    <input id="q" placeholder="חיפוש בעץ…" autocomplete="off">
+    <span class="ic">⌕</span>
+  </div>
+</header>
+
+<div class="shell">
+  <aside>
+    <div class="navbox" id="nav"></div>
+    <div class="exportbox">
+      <p>ייצוא</p>
+      <button onclick="exportJSON()">⬇ ייצוא כל הנתונים (JSON)</button>
+      <button onclick="exportPNG()">⬇ ייצוא תמונת העץ (PNG)</button>
+      <button onclick="reload()">↻ רענון מהמקור</button>
+    </div>
+    <div class="note" id="note">הנתונים נשלפים בזמן אמת ממאגר אגרון לפי תעודות הזהות. הגיל מחושב מתאריך הלידה. רשומות חסרות מוצגות כ„לא ידוע”.</div>
+  </aside>
+
+  <main id="main"></main>
+</div>
+
+<footer>FAMILY INTELLIGENCE</footer>
+
+<button id="fab" onclick="togglePanel(1)">✦ שאל את העוזר</button>
+
+<div id="panel">
+  <div class="top"><b>✦ העוזר המשפחתי</b><i onclick="togglePanel(0)">×</i></div>
+  <div id="log"></div>
+  <div class="chips">
+    <button onclick="ask('מי האבא?')">מי האבא?</button>
+    <button onclick="ask('מה הכתובת?')">מה הכתובת?</button>
+    <button onclick="ask('מה הטלפון?')">מה הטלפון?</button>
+    <button onclick="ask('בני זוג')">בני זוג</button>
+    <button onclick="ask('גילים')">גילים</button>
+  </div>
+  <form onsubmit="event.preventDefault();ask(this.i.value);this.i.value=''">
+    <input name="i" placeholder="שאל שאלה…" autocomplete="off">
+    <button class="go">שלח</button>
+  </form>
+</div>
+
+<div id="load">
+  <div>
+    <div class="ring"></div>
+    <b id="loadT">מאתר את הרשומות…</b>
+    <p id="loadS">שולף נתונים ממאגר אגרון עבור 035711803 ו‑036109486</p>
+  </div>
+</div>
+
+<div id="modal" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet"></div></div>
+
+<script>
+/* ============================================================
+   מקור נתונים — מאגר אגרון (AGRON2006) דרך פרוקסי טווחים
+   ============================================================ */
+const API  = "https://maagarim-web-search-api-k902.onrender.com/api/protected-range";
+const DATA = "https://media.githubusercontent.com/media/BodekOktzim/maagarim-eg-el-fa/main/datasets/AGRON2006.txt";
+const SIZE = 1841092492;
+const IDS  = ["035711803", "036109486"];
+
+const DB = { people: {}, images: {}, order: [] };
+
+const get = async (s, e) => {
+  const r = await fetch(`${API}?url=${encodeURIComponent(DATA)}&start=${s}&end=${e}`);
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.text();
+};
+
+/* חיפוש בינארי לפי ת״ז (הקובץ ממוין עולה) */
+async function findRecord(rawId) {
+  const id = String(rawId).replace(/\D/g, "").padStart(9, "0");
+  const target = parseInt(id, 10);
+  let lo = 0, hi = SIZE;
+  for (let i = 0; i < 60 && hi - lo > 1500; i++) {
+    const mid = Math.floor((lo + hi) / 2);
+    let txt;
+    try { txt = await get(mid, mid + 700); } catch (e) { hi = mid; continue; }
+    const nl = txt.indexOf("\n");
+    if (nl < 0) { lo = mid; continue; }
+    const line = txt.slice(nl + 1).split("\n")[0] || "";
+    const cur = parseInt((line.split("\t")[0] || "").trim(), 10);
+    if (!cur) { hi = mid; continue; }
+    if (cur === target) return parse(line, id);
+    if (cur < target) lo = mid; else hi = mid;
+  }
+  /* סריקה סופית בחלון */
+  const a = Math.max(0, lo - 400), b = Math.min(SIZE, hi + 4000);
+  const txt = await get(a, b);
+  for (const line of txt.split("\n")) {
+    const f = line.split("\t");
+    if ((f[0] || "").trim() === id) return parse(line, id);
+  }
+  return null;
+}
+
+/* פירוק רשומה */
+function parse(line, id) {
+  const f = line.split("\t").map(x => x.replace(/^"|"$/g, "").trim());
+  const bdIdx = f.findIndex(x => /^\d{4}-\d{2}-\d{2}$/.test(x));
+  let fatherName = "", fatherId = "", motherName = "", motherId = "";
+  if (bdIdx > -1) {
+    for (let i = bdIdx + 1; i < f.length - 3; i++) {
+      if (/^\d{5,9}$/.test(f[i]) && /^\d{5,9}$/.test(f[i + 2])) {
+        fatherName = f[i - 1] || ""; fatherId = f[i];
+        motherName = f[i + 1] || ""; motherId = f[i + 2];
+        break;
+      }
+    }
+  }
+  const phones = [f[12] || ""].concat((f[f.length - 1] || "").split(",")).filter(x => /\d/.test(x));
+  const city = f[10] || "", street = [f[7], f[8], f[9]].filter(Boolean).join(" ");
+  return {
+    id,
+    first: f[1] || "", last: f[2] || "", maiden: f[3] || "",
+    gender: f[4] || "", status: f[5] || "", marital: f[6] || "",
+    address: [street, city].filter(Boolean).join(", "),
+    city, phones: [...new Set(phones)].join(" · "),
+    birth: bdIdx > -1 ? f[bdIdx] : "",
+    fatherName, fatherId, motherName, motherId
+  };
+}
+
+const age = b => {
+  if (!b) return null;
+  const d = new Date(b); if (isNaN(d)) return null;
+  const n = new Date();
+  let a = n.getFullYear() - d.getFullYear();
+  if (n.getMonth() < d.getMonth() || (n.getMonth() === d.getMonth() && n.getDate() < d.getDate())) a--;
+  return a;
+};
+
+/* ============================================================
+   טעינה ובניית העץ
+   ============================================================ */
+async function boot() {
+  const [r1, r2] = await Promise.allSettled([findRecord(IDS[0]), findRecord(IDS[1])]);
+  const a = r1.status === "fulfilled" ? r1.value : null;
+  const b = r2.status === "fulfilled" ? r2.value : null;
+
+  if (!a && !b) {
+    document.getElementById("load").innerHTML =
+      `<div><b>לא נמצאו רשומות</b><p>ייתכן שהשירות בהתעוררות — נסה „רענון מהמקור”.</p></div>`;
+    return;
+  }
+
+  const isF = p => p && p.gender === "נקבה";
+  const [husband, wife] = (isF(a) && !isF(b)) ? [b, a] : [a, b];
+  if (husband) add(husband, "main", "בעל");
+  if (wife) add(wife, "spouse", "אישה");
+
+  for (const p of [husband, wife]) {
+    if (!p) continue;
+    if (p.fatherId) {
+      const fa = await findRecord(p.fatherId).catch(() => null);
+      if (fa) add(fa, "parent", "אבא של " + p.first);
+    }
+    if (p.motherId) {
+      const mo = await findRecord(p.motherId).catch(() => null);
+      if (mo) add(mo, "parent", "אמא של " + p.first);
+    }
+  }
+
+  render();
+  document.getElementById("load").remove();
+  greet();
+}
+
+function add(p, cls, role) {
+  if (!p || DB.people[p.id]) return;
+  DB.people[p.id] = { ...p, cls, role };
+  DB.order.push(p.id);
+}
+
+/* ============================================================
+   רינדור
+   ============================================================ */
+const GROUPS = [
+  { key: "main",   title: "האדם הראשי" },
+  { key: "spouse", title: "בן / בת הזוג" },
+  { key: "parent", title: "ההורים" }
+];
+
+function render(filter = "") {
+  const main = document.getElementById("main");
+  const q = filter.trim();
+  let html = "";
+
+  for (const g of GROUPS) {
+    let list = DB.order.map(id => DB.people[id]).filter(p => p.cls === g.key);
+    if (q) list = list.filter(p => (p.first + " " + p.last + " " + p.id + " " + p.address).includes(q));
+    if (!list.length) continue;
+    html += `<h2 class="sec">${g.title}</h2><div class="grid">`;
+    for (const p of list) html += card(p);
+    html += `</div>`;
+  }
+
+  if (!html) html = `<h2 class="sec">אין תוצאות</h2><p class="note">נסה מונח אחר.</p>`;
+  main.innerHTML = html;
+
+  document.getElementById("nav").innerHTML =
+    `<p>ניווט</p>` + GROUPS
+      .filter(g => DB.order.some(id => DB.people[id].cls === g.key))
+      .map(g => `<a href="#" onclick="jump('${g.title}');return false">${g.title}</a>`).join("")
+    + `<a href="#" onclick="exportJSON();return false">ייצוא JSON</a>`;
+}
+
+function card(p) {
+  const av = DB.images[p.id]
+    ? `<img src="${DB.images[p.id]}" alt="">`
+    : (p.gender === "נקבה" ? "♀" : "♙");
+  const a = age(p.birth);
+  const cls = { main: "r-main", spouse: "r-spouse", parent: "r-parent" }[p.cls] || "r-other";
+  return `<div class="card ${p.cls === "main" ? "main" : ""}" onclick="sheet('${p.id}')">
+    <div class="av">${av}</div>
+    <div class="meta">
+      <span class="role ${cls}">${p.role}</span>
+      <div class="nm">${p.first} ${p.last}</div>
+      <div class="sub">${a !== null ? "גיל: " + a + " · " : ""}ת״ז: ${p.id}</div>
+    </div>
+  </div>`;
+}
+
+function jump(t) {
+  const h = [...document.querySelectorAll("h2.sec")].find(x => x.textContent.includes(t));
+  if (h) h.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ============================================================
+   כרטיס פרטים
+   ============================================================ */
+function sheet(id) {
+  const p = DB.people[id]; if (!p) return;
+  const rows = [
+    ["ת״ז", p.id], ["שם פרטי", p.first || "—"], ["שם משפחה", p.last || "—"],
+    ["שם נעורים", p.maiden || "—"], ["מין", p.gender || "—"],
+    ["גיל", age(p.birth) ?? "—"], ["תאריך לידה", p.birth || "—"],
+    ["מצב משפחתי", p.marital || "—"], ["סטטוס", p.status || "—"],
+    ["כתובת", p.address || "—"], ["טלפון", p.phones || "—"],
+    ["שם האב", p.fatherName || "—"], ["ת״ז האב", p.fatherId || "—"],
+    ["שם האם", p.motherName || "—"], ["ת״ז האם", p.motherId || "—"],
+    ["תפקיד בעץ", p.role]
+  ];
+  document.getElementById("sheet").innerHTML =
+    `<span class="x" onclick="closeSheet()">×</span>
+     <h3>${p.first} ${p.last}</h3>
+     <div class="sub" style="color:var(--dim);font-size:12.5px">${p.role}</div>
+     <div class="rows">${rows.map(r => `<div class="row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join("")}</div>`;
+  document.getElementById("modal").classList.add("on");
+}
+const closeSheet = () => document.getElementById("modal").classList.remove("on");
+
+/* ============================================================
+   עוזר
+   ============================================================ */
+function togglePanel(on) {
+  const p = document.getElementById("panel");
+  p.classList.toggle("on", !!on);
+  if (on) p.querySelector("input").focus();
+}
+
+function push(cls, txt) {
+  const log = document.getElementById("log");
+  const d = document.createElement("div");
+  d.className = "msg " + cls; d.textContent = txt;
+  log.appendChild(d); log.scrollTop = log.scrollHeight;
+}
+
+function greet() {
+  push("a", "שלום! שאל על גילים, כתובות, טלפונים או קשרי משפחה בעץ.");
+}
+
+function ask(q) {
+  q = (q || "").trim(); if (!q) return;
+  push("u", q);
+  const all = DB.order.map(id => DB.people[id]);
+  const who = all.find(p => q.includes(p.first) && p.first.length > 1) || null;
+  const t = q.toLowerCase();
+  let out = "";
+
+  const fmt = p => `${p.first} ${p.last} (ת״ז ${p.id}, גיל ${age(p.birth) ?? "?"})`;
+  const by = cls => all.filter(p => p.cls === cls);
+
+  if (/גיל/.test(q)) out = all.map(p => `${p.first} ${p.last}: ${age(p.birth) ?? "לא ידוע"}`).join("\n");
+  else if (/כתובת|גר|גרה|איפה/.test(q)) out = all.map(p => `${p.first} ${p.last}: ${p.address || "לא ידוע"}`).join("\n");
+  else if (/טלפון|נייד|להתקשר/.test(q)) out = all.map(p => `${p.first} ${p.last}: ${p.phones || "לא ידוע"}`).join("\n");
+  else if (/אבא|אב/.test(q)) out = all.map(p => `${p.first} ${p.last} — אב: ${p.fatherName || "לא ידוע"}${p.fatherId ? " (" + p.fatherId + ")" : ""}`).join("\n");
+  else if (/אמא|אם/.test(q)) out = all.map(p => `${p.first} ${p.last} — אם: ${p.motherName || "לא ידוע"}${p.motherId ? " (" + p.motherId + ")" : ""}`).join("\n");
+  else if (/בן זוג|בת זוג|נשוי|נשואה|זוג/.test(q)) out = by("main").concat(by("spouse")).map(fmt).join("\n");
+  else if (/הורים/.test(q)) out = by("parent").map(fmt).join("\n") || "אין רשומות הורים.";
+  else if (/מי/.test(q) && who) out = fmt(who) + " — " + who.role + (who.address ? `, ${who.address}` : "");
+  else out = "אפשר לשאול על: גיל, כתובת, טלפון, אבא, אמא, הורים, בני זוג.";
+
+  push("a", out);
+}
+
+/* ============================================================
+   ייצוא
+   ============================================================ */
+function exportJSON() {
+  const data = { generated: new Date().toISOString(), source: "agron", people: DB.order.map(id => DB.people[id]) };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "family-intelligence-full-data.json";
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+function exportPNG() {
+  if (!window.html2canvas) return alert("ספריית הייצוא לא נטענה.");
+  html2canvas(document.getElementById("main"), { backgroundColor: "#0b0710", scale: 2 })
+    .then(c => {
+      const a = document.createElement("a");
+      a.href = c.toDataURL("image/png");
+      a.download = "family-intelligence-tree.png";
+      a.click();
+    });
+}
+
+function reload() { location.reload(); }
+
+document.getElementById("q").addEventListener("input", e => render(e.target.value));
+boot();
+</script>
+</body>
+</html>
